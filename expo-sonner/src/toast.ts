@@ -24,13 +24,9 @@ function createToast(
   return id;
 }
 
-// ─── Core function ───────────────────────────────────────────────────────────
-
 function toast(title: string, options?: ExternalToast): string {
   return createToast("default", title, options);
 }
-
-// ─── Typed variants ──────────────────────────────────────────────────────────
 
 toast.success = (title: string, options?: ExternalToast) =>
   createToast("success", title, options);
@@ -43,8 +39,6 @@ toast.warning = (title: string, options?: ExternalToast) =>
 
 toast.loading = (title: string, options?: ExternalToast) =>
   createToast("loading", title, { duration: Infinity, ...options });
-
-// ─── Promise helper ───────────────────────────────────────────────────────────
 
 type PromiseData<T> = {
   loading: string;
@@ -79,8 +73,6 @@ toast.promise = <T>(promise: Promise<T>, data: PromiseData<T>): Promise<T> => {
 
   return promise;
 };
-
-// ─── Control ─────────────────────────────────────────────────────────────────
 
 toast.dismiss = (id?: string) => {
   if (id) {

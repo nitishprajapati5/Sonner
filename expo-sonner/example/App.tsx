@@ -1,138 +1,136 @@
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import { StyleSheet, Pressable, Text, ScrollView } from "react-native";
 import { Toaster, toast } from "expo-sonner";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.heading}>expo-sonner</Text>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#6366f1" }]}
-          onPress={() => {
-            const id = toast("Event has been created");
-            console.log(
-              "[toast] type: default | title: Event has been created | id:",
-              id,
-            );
-          }}
+          onPress={() => toast("Event has been created")}
         >
           <Text style={styles.btnText}>Default</Text>
         </Pressable>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#22c55e" }]}
-          onPress={() => {
-            const id = toast.success("Profile saved!", {
+          onPress={() =>
+            toast.success("Profile saved!", {
               description: "Your changes have been applied.",
-            });
-            console.log(
-              "[toast] type: success | title: Profile saved! | id:",
-              id,
-            );
-          }}
+            })
+          }
         >
           <Text style={styles.btnText}>Success</Text>
         </Pressable>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#ef4444" }]}
-          onPress={() => {
-            const id = toast.error("Something went wrong", {
+          onPress={() =>
+            toast.error("Something went wrong", {
               description: "Please try again later.",
-            });
-            console.log(
-              "[toast] type: error | title: Something went wrong | id:",
-              id,
-            );
-          }}
+            })
+          }
         >
           <Text style={styles.btnText}>Error</Text>
         </Pressable>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#f59e0b" }]}
-          onPress={() => {
-            const id = toast.warning("Low disk space", {
+          onPress={() =>
+            toast.warning("Low disk space", {
               description: "You have less than 1GB remaining.",
-            });
-            console.log(
-              "[toast] type: warning | title: Low disk space | id:",
-              id,
-            );
-          }}
+            })
+          }
         >
           <Text style={styles.btnText}>Warning</Text>
         </Pressable>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#6366f1" }]}
-          onPress={() => {
-            const id = toast.loading("Uploading file...");
-            console.log(
-              "[toast] type: loading | title: Uploading file... | id:",
-              id,
-            );
-          }}
+          onPress={() => toast.loading("Uploading file...")}
         >
           <Text style={styles.btnText}>Loading</Text>
         </Pressable>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#0ea5e9" }]}
-          onPress={() => {
-            console.log("[toast] type: promise | title: Saving changes…");
+          onPress={() =>
             toast.promise(new Promise((res) => setTimeout(res, 2000)), {
               loading: "Saving changes…",
               success: "Changes saved!",
               error: "Failed to save.",
-            });
-          }}
+            })
+          }
         >
           <Text style={styles.btnText}>Promise</Text>
         </Pressable>
 
         <Pressable
           style={[styles.btn, { backgroundColor: "#111827" }]}
-          onPress={() => {
-            const id = toast.success("File ready", {
+          onPress={() =>
+            toast.success("File ready", {
               action: {
                 label: "Download",
-                onClick: () =>
-                  console.log("[toast] action pressed | label: Download"),
+                onClick: () => console.log("Download pressed"),
               },
-            });
-            console.log("[toast] type: success | title: File ready | id:", id);
-          }}
+            })
+          }
         >
           <Text style={styles.btnText}>With Action</Text>
         </Pressable>
 
+        {/* Custom icon demo */}
+        <Pressable
+          style={[styles.btn, { backgroundColor: "#ec4899" }]}
+          onPress={() =>
+            toast("You've got mail!", {
+              icon: <Ionicons name="mail" size={18} color="#111827" />,
+              description: "Open your inbox to read.",
+            })
+          }
+        >
+          <Text style={styles.btnText}>Custom Icon</Text>
+        </Pressable>
+
+        {/* Stack test: fires 3 toasts in quick succession */}
+        <Pressable
+          style={[styles.btn, { backgroundColor: "#7c3aed" }]}
+          onPress={() => {
+            toast.success("First toast");
+            setTimeout(() => toast.error("Second toast"), 300);
+            setTimeout(() => toast.warning("Third toast"), 600);
+          }}
+        >
+          <Text style={styles.btnText}>Stack Test (3 toasts)</Text>
+        </Pressable>
+
         <Pressable
           style={[styles.btn, { backgroundColor: "#9ca3af" }]}
-          onPress={() => {
-            console.log("[toast] dismiss all");
-            toast.dismiss();
-          }}
+          onPress={() => toast.dismiss()}
         >
           <Text style={styles.btnText}>Dismiss All</Text>
         </Pressable>
-      </View>
+      </ScrollView>
 
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-right" />
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: "#f9fafb",
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
     padding: 24,
+    paddingTop: 60,
+    paddingBottom: 60,
   },
   heading: {
     fontSize: 22,
